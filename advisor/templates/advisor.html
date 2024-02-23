@@ -1,0 +1,38 @@
+{% extends 'index.html' %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'advisor:advisor-view' %}">Advisor Portal</a></li>
+    <li class="breadcrumb-item active">My Student List</li>
+{% endblock %}
+
+{% block content %}
+
+    {% if students.exists %}
+        <table id="myTable" class="table table-striped mb-4" style="margin-top: 22px">
+
+            <thead class="table-inverse">
+                <tr>
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Number Of Course</th>
+                    <th>Total Credit</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for c in students %}
+                    <tr>
+                        <td class="align-middle">{{ c.student.user.username }}</td>
+                        <td class="align-middle">{{ c.student.user.first_name }} {{ c.student.user.last_name }}</td>
+                        <td class="align-middle">{{ c.number_of_course_taken }}</td>
+                        <td class="align-middle">{{ c.total_credit_taken }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h4 style="text-align: center">No Student Assign Yet.</h4>
+    {% endif %}
+
+
+{% endblock %}

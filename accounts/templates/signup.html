@@ -1,0 +1,29 @@
+{% extends 'index.html' %}
+
+{% block breadcrumb %}
+
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Student Portal</a></li>
+    <li class="breadcrumb-item active">Select Sign Up Type</li>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-6 col-sm-8">
+          <div class="card">
+            <div class="card-body">
+              <h3 class="card-title">Sign up for a free account</h3>
+                <p class="lead">Select below the type of account you want to create</p>
+            </div>
+
+            <div class="card-footer text-muted text-center">
+                  <a href="{% url 'student_signup' %}" class="btn btn-outline-success" role="button">I'm a Student</a>
+                  <a href="{% url 'advisor_signup' %}" class="btn btn-outline-dark" role="button">I'm a Advisor</a>
+            </div>
+
+          </div>
+        </div>
+    </div>
+
+{% endblock %}

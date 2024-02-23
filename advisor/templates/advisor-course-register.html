@@ -1,0 +1,131 @@
+{% extends 'index.html' %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'advisor:advisor-view' %}">Advisor Portal</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'advisor:advisor-course-offer' %}">Course Offer</a></li>
+    <li class="breadcrumb-item active">Register Course</li>
+{% endblock %}
+
+{% block content %}
+
+    <div class="dropdown">
+
+        <label>Select Student ID</label>
+
+        <select id="student">
+                <option value="none" selected>--------------</option>
+                {% for s in student %}
+                    <option value="{{ s.student.user.username }}">{{ s.student.user.username }}</option>
+                {% endfor %}
+        </select>
+
+    </div>
+
+    {% if course.exists %}
+
+        <table id="myTable" class="table table-striped mb-4" style="margin-top: 22px">
+
+            <thead class="table-inverse">
+                <tr>
+                    <th>Season</th>
+                    <th>Year</th>
+                    <th>Semester</th>
+                    <th>Course Code</th>
+                    <th>Course Name</th>
+                    <th>Course Credit</th>
+                    <th>Section</th>
+                    <th>Capacity</th>
+                    <th>Enrolled Student</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for c in course %}
+                <tr>
+                    <td class="align-middle">{{ c.semester.season }}</td>
+                    <td class="align-middle">{{ c.semester.year }}</td>
+                    <td class="align-middle">{{ c.semester.semester }}</td>
+                    <td class="align-middle">{{ c.course.course_code }}</td>
+                    <td class="align-middle">{{ c.course.course_name }}</td>
+                    <td class="align-middle">{{ c.course.course_credit }}</td>
+                    <td class="align-middle">{{ c.section }}</td>
+                    <td class="align-middle">{{ c.capacity }}</td>
+                    <td class="align-middle">{{ c.enrolled_students }}</td>
+                    <td ><button class="btnrow">Enroll</button> </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <script type="text/javascript">
+
+            $("#myTable").on('click','.btnrow',function(){
+
+                 var student = $("#student").val();
+
+                 if (student == 'none'){
+                     alert("Please Select Student ID!");
+                 }
+
+                 var currentRow=$(this).closest("tr");
+
+                 var col5=currentRow.find("td:eq(4)").text();
+                 var col6=currentRow.find("td:eq(5)").text();
+                 var col7=currentRow.find("td:eq(6)").text();
+
+                 var obj = {
+                     course_name: col5,
+                     course_credit: col6,
+                     section: col7,
+                     student: student
+                 };
+
+                 console.log(obj);
+
+                 $.ajaxSetup({
+                      url: '{% url "advisor:advisor-course-register" %}',
+                      global: false,
+                      type: "GET",
+                      dataType: 'json'
+                 });
+
+                 $.ajax({
+                     data: obj,
+
+                     beforeSend: function () {
+                         return confirm("Are you sure want to enroll "+ col5 +" section "+ col7 +" ?");
+                     },
+
+                     success: function (data) {
+
+                         if(data.is_save) {
+                             alert("Course Added Successfully!");
+                             location.reload();
+                         }
+
+                         if(data.is_taken){
+                             alert("Student Has Already Registered This Course!");
+                         }
+
+                         if (data.credit) {
+                             alert("Student Can Not Take Over 18 Credit!");
+                         }
+
+                         if (data.enrolled_student) {
+                             alert("Section Is Full!");
+                         }
+
+                     }
+
+                 });
+
+            });
+        </script>
+
+        {% else %}
+
+            <p style="text-align: center">No Course Offer Available</p>
+
+    {% endif %}
+
+{% endblock %}

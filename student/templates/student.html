@@ -1,0 +1,50 @@
+{% extends 'index.html' %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'student:student-view' %}">Student Portal</a></li>
+    <li class="breadcrumb-item active">Pre Registered Course</li>
+{% endblock %}
+
+{% block content %}
+    <h3 style="text-align: center">Pre Registered Course</h3>
+
+    {% if course.exists %}
+
+    <table id="myTable" class="table table-striped mb-4" style="margin-top: 22px">
+
+            <thead class="table-inverse">
+                <tr>
+                    <th>Season</th>
+                    <th>Year</th>
+                    <th>Semester</th>
+                    <th>Course Code</th>
+                    <th>Course Name</th>
+                    <th>Course Credit</th>
+                    <th>Section</th>
+                    <th>Capacity</th>
+                    <th>Enrolled Student</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for cd in course %}
+                <tr>
+                    <td class="align-middle">{{ cd.course.semester.season }}</td>
+                    <td class="align-middle">{{ cd.course.semester.year }}</td>
+                    <td class="align-middle">{{ cd.course.semester.semester }}</td>
+                    <td class="align-middle">{{ cd.course.course.course_code }}</td>
+                    <td class="align-middle">{{ cd.course.course.course_name }}</td>
+                    <td class="align-middle">{{ cd.course.course.course_credit }}</td>
+                    <td class="align-middle">{{ cd.course.section }}</td>
+                    <td class="align-middle">{{ cd.course.capacity }}</td>
+                    <td class="align-middle">{{ cd.course.enrolled_students }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+
+        <h5 style="text-align: center; margin-top: 12%;">Not Registered Any Course Yet</h5>
+
+    {% endif %}
+
+{% endblock %}

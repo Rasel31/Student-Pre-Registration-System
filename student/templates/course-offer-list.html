@@ -1,0 +1,137 @@
+{% extends 'index.html' %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'student:student-view' %}">Student Portal</a></li>
+    <li class="breadcrumb-item active">Course Offer List</li>
+{% endblock %}
+
+{% block content %}
+        <div style="width: 100%">
+            <div style="width: 25%; float: left">
+
+                <form class="form-group" action="{% url 'student:course-offer' %}" method="post">{% csrf_token %}
+
+                    <label class="form-group">Semester</label>
+
+                    <select class="form-group" id="semester" name="q2">
+                                <option class="form-group" selected>Choose</option>
+                                <option class="form-group" value="L1T1">Level1 Term1</option>
+                                <option class="form-group" value="L1T2">Level1 Term2</option>
+                                <option class="form-group" value="L1T3">Level1 Term3</option>
+                                <option class="form-group" value="L2T1">Level2 Term1</option>
+                                <option class="form-group" value="L2T2">Level2 Term2</option>
+                                <option class="form-group" value="L2T3">Level2 Term3</option>
+                                <option class="form-group" value="L3T1">Level3 Term1</option>
+                                <option class="form-group" value="L3T2">Level3 Term2</option>
+                                <option class="form-group" value="L3T3">Level3 Term3</option>
+                                <option class="form-group" value="L4T1">Level4 Term1</option>
+                                <option class="form-group" value="L4T2">Level4 Term2</option>
+                                <option class="form-group" value="L4T3">Level4 Term3</option>
+                    </select>
+                    <button type="submit" class="btn btn-outline-success">Get List</button>
+
+                </form>
+            </div>
+
+
+            <div style="width: 25%;float: right">
+                <form class="form" action="{% url 'student:course-offer' %}" method="post">{% csrf_token %}
+                    <input type="text" placeholder="Search Course Code..." name="q1" value=""
+                           style=" border: 1px; margin-top: 1px; height: 35px; width: 200px">
+
+                    <button type="submit" class="btn btn-outline-success">Search</button>
+                </form>
+            </div>
+        </div>
+
+<div class="clearfix"></div>
+
+    {% if semester.exists %}
+
+        <table id="example3" class="table table-striped mb-4" style="margin-top: 22px">
+
+            <thead class="table-inverse">
+                <tr>
+                    <th>Course Code</th>
+                    <th>Course Name</th>
+                    <th>Course Credit</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for c in semester %}
+                <tr>
+                    <form action="{% url 'student:course-register' %}" method="post">{% csrf_token %}
+                        <td class="align-middle">
+                            <button type="submit" class="btn btn-outline-success" name="q" value="{{ c.course.course_code }}"
+                                    style="margin-left: 50px">{{ c.course.course_code }}</button>
+                        </td>
+                    </form>
+                    <td class="align-middle">{{ c.course.course_name }}</td>
+                    <td class="align-middle">{{ c.course.course_credit }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+    {% elif search1.exists %}
+
+        <table id="example2" class="table table-striped mb-4" style="margin-top: 22px">
+
+            <thead class="table-inverse">
+                <tr>
+                    <th>Course Code</th>
+                    <th>Course Name</th>
+                    <th>Course Credit</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for c in search1 %}
+                <tr>
+                    <form action="{% url 'student:course-register' %}" method="post">{% csrf_token %}
+                        <td class="align-middle">
+                            <button type="submit" class="btn btn-outline-success" name="q" value="{{ c.course_code }}"
+                                    style="margin-left: 50px">{{ c.course_code }}</button>
+                        </td>
+                    </form>
+                    <td class="align-middle">{{ c.course_name }}</td>
+                    <td class="align-middle">{{ c.course_credit }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    {% elif search.exists %}
+
+        <table id="example2" class="table table-striped mb-4" style="margin-top: 22px">
+
+            <thead class="table-inverse">
+                <tr>
+                    <th>Course Code</th>
+                    <th>Course Name</th>
+                    <th>Course Credit</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for c in search %}
+                <tr>
+                    <form action="{% url 'student:course-register' %}" method="post">{% csrf_token %}
+                        <td class="align-middle">
+                            <button type="submit" class="btn btn-outline-success" name="q" value="{{ c.course_code }}"
+                                    style="margin-left: 50px">{{ c.course_code }}</button>
+                        </td>
+                    </form>
+                    <td class="align-middle">{{ c.course_name }}</td>
+                    <td class="align-middle">{{ c.course_credit }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    {% endif %}
+
+{% endblock content %}

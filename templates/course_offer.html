@@ -1,0 +1,20 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block stylesheet %}   <link rel="stylesheet" href="{% static 'css/accounts.css' %}">{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active"><a href="{% url 'admin_panel:course-offer-list' %}">Course Offer List</a></li>
+{% endblock %}
+
+{% block content %}
+    <h4 style="text-align: center">Create Course Offer</h4>
+
+    <form method="post">{% csrf_token %}
+
+        {% include 'includes/form.html' %}
+
+        <button type="submit" class="btn btn-primary btn-block">Post</button>
+    </form>
+
+{% endblock %}

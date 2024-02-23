@@ -1,0 +1,39 @@
+{% extends 'index.html' %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active"><a href="{% url 'admin_panel:course-offer' %}">Create Course Offer</a></li>
+{% endblock %}
+
+{% block content %}
+    <h4 style="text-align: center">Course Offer List</h4>
+
+    <table class="table table-striped mb-4" style="margin-top: 22px" border="1" cellspacing="0" cellpadding="2">
+            <thead class="table-inverse">
+                <tr>
+                    <th>Semester</th>
+                    <th>Year</th>
+                    <th>Course Name</th>
+                    <th>Course Code</th>
+                    <th>Course Credit</th>
+                    <th>Section</th>
+                    <th>Capacity</th>
+                    <th>Enrolled Students</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for crs in course %}
+                <tr>
+                    <td class="align-middle">{{ crs.semester.semester }}</td>
+                    <td class="align-middle">{{ crs.semester.year }}</td>
+                    <td class="align-middle">{{ crs.course.course_name }}</td>
+                    <td class="align-middle">{{ crs.course.course_code }}</td>
+                    <td class="align-middle">{{ crs.course.course_credit }}</td>
+                    <td class="align-middle">{{ crs.section }}</td>
+                    <td class="align-middle">{{ crs.capacity }}</td>
+                    <td class="align-middle">{{ crs.enrolled_students }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+    </table>
+
+{% endblock %}
